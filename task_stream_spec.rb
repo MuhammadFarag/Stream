@@ -10,8 +10,8 @@ class Stream
     @task_list << task
   end
 
-  def tasks
-    @task_list
+  def due
+    @task_list.first
   end
 end
 
@@ -26,14 +26,14 @@ describe Stream do
 
     it 'should be empty if no Tasks were added' do
       stream = Stream.new
-      expect(stream.tasks.first).to eq nil
+      expect(stream.due).to eq nil
     end
 
     it 'should get the first entered task FIFO' do
       stream = Stream.new
       stream.add(@task_1)
       stream.add(@task_2)
-      expect(stream.tasks.first).to eq @task_1
+      expect(stream.due).to eq @task_1
     end
 
   end
