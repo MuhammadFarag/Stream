@@ -25,7 +25,7 @@ class Stream
   end
 
   def due
-    @task_list.select { |task| !task.completed }.first
+    @task_list.reject(&:completed).first
   end
 end
 
