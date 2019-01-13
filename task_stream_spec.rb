@@ -1,8 +1,22 @@
 require 'rspec'
+require 'date'
 
+class DateTime
+  def to_date
+    Date.jd(DateTime.now.jd)
+  end
+
+  def same_day_as?(other)
+    Date.jd(jd) == Date.jd(other.jd)
+  end
+
+  def today?
+    same_day_as?(DateTime.now)
+  end
+end
 
 class Task
-  attr_accessor :description
+  attr_accessor :description, :completion_time
 
   def initialize(description)
     @completion_time = nil
@@ -10,11 +24,15 @@ class Task
   end
 
   def complete
-    @completion_time = Time.now
+    @completion_time = DateTime.now
   end
 
   def complete?
     !@completion_time.nil?
+  end
+
+  def completed_today?
+    @completion_time.today?
   end
 
 end
@@ -29,19 +47,19 @@ class Stream
   end
 
   def due
+    last_completed_task = @task_list.select(&:complete?).last
+    return nil if !last_completed_task.nil? && last_completed_task.completed_today?
     @task_list.reject(&:complete?).first
   end
 end
 
-
 describe Stream do
-  before(:all) do
+  before(:each) do
     @task_1 = Task.new('My first task')
     @task_2 = Task.new('My second task')
   end
 
   context 'Due task' do
-
     it 'should be empty if no Tasks were added' do
       stream = Stream.new
       expect(stream.due).to eq nil
@@ -54,13 +72,12 @@ describe Stream do
       expect(stream.due).to eq @task_1
     end
 
-    it 'should get the first uncompleted task' do
+    it 'should get nothing if the last completed task, was completed today' do
       stream = Stream.new
       stream.add(@task_1)
       stream.add(@task_2)
       @task_1.complete
-      expect(stream.due).to eq @task_2
+      expect(stream.due).to eq nil
     end
-
   end
 end
