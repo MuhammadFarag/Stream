@@ -2,15 +2,19 @@ require 'rspec'
 
 
 class Task
-  attr_accessor :completed, :description
+  attr_accessor :description
 
   def initialize(description)
-    @completed = false
+    @completion_time = nil
     @description = description
   end
 
   def complete
-    @completed = true
+    @completion_time = Time.now
+  end
+
+  def completed
+    !@completion_time.nil?
   end
 
 end
