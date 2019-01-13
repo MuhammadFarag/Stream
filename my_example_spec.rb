@@ -1,16 +1,19 @@
 require 'rspec'
 
+
 class Stream
-  def tasks; end
+  def tasks
+    []
+  end
 end
 
 
 describe Stream do
   context 'When retrieving tasks from a Stream' do
 
-    it 'should get nothing when its first initialized' do
+    it 'should be empty if no Tasks were added' do
       stream = Stream.new
-      expect(stream.tasks).to eq nil
+      expect(stream.tasks.first).to eq nil
     end
   end
 end
