@@ -22,7 +22,7 @@ describe Stream do
     @task_2 = 'My second task'
   end
 
-  context 'When retrieving tasks from a Stream' do
+  context 'Due task' do
 
     it 'should be empty if no Tasks were added' do
       stream = Stream.new
