@@ -13,7 +13,7 @@ class Task
     @completion_time = Time.now
   end
 
-  def completed
+  def complete?
     !@completion_time.nil?
   end
 
@@ -29,7 +29,7 @@ class Stream
   end
 
   def due
-    @task_list.reject(&:completed).first
+    @task_list.reject(&:complete?).first
   end
 end
 
