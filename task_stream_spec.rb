@@ -1,6 +1,20 @@
 require 'rspec'
 
 
+class Task
+  attr_accessor :completed, :description
+
+  def initialize(description)
+    @completed = false
+    @description = description
+  end
+
+  def complete
+    @completed = true
+  end
+
+end
+
 class Stream
   def initialize
     @task_list = []
@@ -11,15 +25,15 @@ class Stream
   end
 
   def due
-    @task_list.first
+    @task_list.select { |task| !task.completed }.first
   end
 end
 
 
 describe Stream do
   before(:all) do
-    @task_1 = 'My first task'
-    @task_2 = 'My second task'
+    @task_1 = Task.new('My first task')
+    @task_2 = Task.new('My second task')
   end
 
   context 'Due task' do
@@ -34,6 +48,14 @@ describe Stream do
       stream.add(@task_1)
       stream.add(@task_2)
       expect(stream.due).to eq @task_1
+    end
+
+    it 'should get the first uncompleted task' do
+      stream = Stream.new
+      stream.add(@task_1)
+      stream.add(@task_2)
+      @task_1.complete
+      expect(stream.due).to eq @task_2
     end
 
   end
