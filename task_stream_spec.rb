@@ -17,6 +17,11 @@ end
 
 
 describe Stream do
+  before(:all) do
+    @task_1 = 'My first task'
+    @task_2 = 'My second task'
+  end
+
   context 'When retrieving tasks from a Stream' do
 
     it 'should be empty if no Tasks were added' do
@@ -26,9 +31,9 @@ describe Stream do
 
     it 'should get the first entered task FIFO' do
       stream = Stream.new
-      stream.add('My first task')
-      stream.add('My second task')
-      expect(stream.tasks.first).to eq 'My first task'
+      stream.add(@task_1)
+      stream.add(@task_2)
+      expect(stream.tasks.first).to eq @task_1
     end
 
   end

@@ -12,4 +12,4 @@ RUN bundle install
 COPY . /usr/src/app/
 
 
-CMD ["bundle", "exec", "rspec", "./my_example_spec.rb"]
+CMD ["bundle", "exec", "rspec", "./task_stream_spec.rb"]
