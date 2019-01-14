@@ -1,5 +1,6 @@
 require 'rspec'
 require 'date'
+require 'timecop'
 
 class DateTime
   def to_date
@@ -59,6 +60,10 @@ describe Stream do
     @task_2 = Task.new('My second task')
   end
 
+  after(:each) do
+    Timecop.return
+  end
+
   context 'Due task' do
     it 'should be empty if no Tasks were added' do
       stream = Stream.new
@@ -72,12 +77,22 @@ describe Stream do
       expect(stream.due).to eq @task_1
     end
 
-    it 'should get nothing if the last completed task, was completed today' do
+    it 'should get nothing, if the last completed task was completed today' do
       stream = Stream.new
       stream.add(@task_1)
       stream.add(@task_2)
       @task_1.complete
       expect(stream.due).to eq nil
+    end
+
+    it 'should get new task if the last completed task, was completed before today' do
+      stream = Stream.new
+      stream.add(@task_1)
+      stream.add(@task_2)
+      Timecop.freeze(Date.today - 1)
+      @task_1.complete
+      Timecop.return
+      expect(stream.due).to eq @task_2
     end
   end
 end
