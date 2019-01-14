@@ -95,20 +95,35 @@ describe Stream do
 end
 
 class River
-  def initialize
-    @streams = []
+  def initialize(*streams)
+    @streams = streams
   end
 
   def tasks
-    nil
+    @streams.first.due unless @streams.nil? || @streams.empty?
   end
 end
 
 describe River do
+
+  before(:each) do
+    @task_1 = Task.new('My first task')
+    @task_2 = Task.new('My second task')
+    @stream = Stream.new(5, DateTime.now)
+    @stream.add(@task_1)
+    @stream.add(@task_2)
+  end
+
   context 'tasks' do
     it 'should return nothing if the river is empty' do
       river = River.new
       expect(river.tasks).to eq nil
     end
+
+    it 'should return due task from one stream' do
+      river = River.new(@stream)
+      expect(river.tasks).to eq @task_1
+    end
+
   end
 end
