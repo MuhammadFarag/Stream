@@ -28,7 +28,6 @@ class Task
   def completed_within?(days)
     @completion_time.within?(days)
   end
-
 end
 
 class Stream
@@ -43,8 +42,7 @@ class Stream
 
   def due
     last_completed_task = @task_list.select(&:complete?).last
-    return nil if !last_completed_task.nil? && last_completed_task.completed_within?(@dormancy_days)
-    @task_list.reject(&:complete?).first
+    @task_list.reject(&:complete?).first unless last_completed_task && last_completed_task.completed_within?(@dormancy_days)
   end
 end
 
@@ -84,6 +82,5 @@ describe Stream do
       Timecop.return
       expect(@stream.due).to eq @task_2
     end
-
   end
 end
