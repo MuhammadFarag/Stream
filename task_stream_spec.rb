@@ -14,7 +14,6 @@ end
 
 class Task
   def initialize(description)
-    @completion_time = nil
     @description = description
   end
 
