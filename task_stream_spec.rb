@@ -93,3 +93,22 @@ describe Stream do
     end
   end
 end
+
+class River
+  def initialize
+    @streams = []
+  end
+
+  def tasks
+    nil
+  end
+end
+
+describe River do
+  context 'tasks' do
+    it 'should return nothing if the river is empty' do
+      river = River.new
+      expect(river.tasks).to eq nil
+    end
+  end
+end
