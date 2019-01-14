@@ -100,12 +100,11 @@ class River
   end
 
   def tasks
-    @streams.first.due unless @streams.nil? || @streams.empty?
+    @streams.map(&:due) unless @streams.nil? || @streams.empty?
   end
 end
 
 describe River do
-
   before(:each) do
     @task_1 = Task.new('My first task')
     @task_2 = Task.new('My second task')
@@ -122,8 +121,12 @@ describe River do
 
     it 'should return due task from one stream' do
       river = River.new(@stream)
-      expect(river.tasks).to eq @task_1
+      expect(river.tasks).to eq [@task_1]
     end
 
+    it 'should return due tasks from all streams' do
+      river = River.new(@stream, @stream)
+      expect(river.tasks).to eq [@task_1, @task_1]
+    end
   end
 end
