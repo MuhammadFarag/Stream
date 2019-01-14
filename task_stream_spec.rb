@@ -52,7 +52,7 @@ describe Stream do
   before(:each) do
     @task_1 = Task.new('My first task')
     @task_2 = Task.new('My second task')
-    @stream = Stream.new
+    @stream = Stream.new(5)
     @stream.add(@task_1)
     @stream.add(@task_2)
   end
@@ -71,16 +71,19 @@ describe Stream do
       expect(@stream.due).to eq @task_1
     end
 
-    it 'should get nothing, if the last completed task was completed within the default dormancy of 1 day' do
+    it 'should get nothing, if the last completed task was completed within dormancy value' do
+      Timecop.freeze(Date.today - 4)
       @task_1.complete
+      Timecop.return
       expect(@stream.due).to eq nil
     end
 
-    it 'should get new task if the last completed task, was completed before the default dormancy days of 1 day' do
-      Timecop.freeze(Date.today - 1)
+    it 'should get new task if the last completed task, was completed before dormancy value' do
+      Timecop.freeze(Date.today - 5)
       @task_1.complete
       Timecop.return
       expect(@stream.due).to eq @task_2
     end
+
   end
 end
