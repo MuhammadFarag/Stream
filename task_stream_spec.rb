@@ -31,9 +31,10 @@ class Task
 end
 
 class Stream
-  def initialize(dormancy_days = 1)
+  def initialize(dormancy_days = 1, start_date = nil)
     @task_list = []
     @dormancy_days = dormancy_days
+    @start_date = start_date
   end
 
   def add(task)
@@ -41,6 +42,8 @@ class Stream
   end
 
   def due
+    return unless @start_date && @start_date <= DateTime.now
+
     last_completed_task = @task_list.select(&:complete?).last
     @task_list.reject(&:complete?).first unless last_completed_task && last_completed_task.completed_within?(@dormancy_days)
   end
@@ -50,7 +53,7 @@ describe Stream do
   before(:each) do
     @task_1 = Task.new('My first task')
     @task_2 = Task.new('My second task')
-    @stream = Stream.new(5)
+    @stream = Stream.new(5, DateTime.now)
     @stream.add(@task_1)
     @stream.add(@task_2)
   end
@@ -81,6 +84,12 @@ describe Stream do
       @task_1.complete
       Timecop.return
       expect(@stream.due).to eq @task_2
+    end
+
+    it 'should not get tasks for streams that are going to start in the future' do
+      Timecop.freeze(Date.today - 5)
+      expect(@stream.due).to eq nil
+      Timecop.return
     end
   end
 end
