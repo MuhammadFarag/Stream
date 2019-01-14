@@ -14,11 +14,13 @@ class DateTime
   def today?
     same_day_as?(DateTime.now)
   end
+
+  def within?(days)
+    (Date.jd(jd) - Date.jd(DateTime.now.jd)).abs < days
+  end
 end
 
 class Task
-  attr_accessor :description, :completion_time
-
   def initialize(description)
     @completion_time = nil
     @description = description
@@ -36,11 +38,16 @@ class Task
     @completion_time.today?
   end
 
+  def completed_within?(days)
+    @completion_time.within?(days)
+  end
+
 end
 
 class Stream
-  def initialize
+  def initialize(dormancy_days = 1)
     @task_list = []
+    @dormancy_days = dormancy_days
   end
 
   def add(task)
@@ -49,7 +56,7 @@ class Stream
 
   def due
     last_completed_task = @task_list.select(&:complete?).last
-    return nil if !last_completed_task.nil? && last_completed_task.completed_today?
+    return nil if !last_completed_task.nil? && last_completed_task.completed_within?(@dormancy_days)
     @task_list.reject(&:complete?).first
   end
 end
@@ -77,12 +84,12 @@ describe Stream do
       expect(@stream.due).to eq @task_1
     end
 
-    it 'should get nothing, if the last completed task was completed today' do
+    it 'should get nothing, if the last completed task was completed within the default dormancy of 1 day' do
       @task_1.complete
       expect(@stream.due).to eq nil
     end
 
-    it 'should get new task if the last completed task, was completed before today' do
+    it 'should get new task if the last completed task, was completed before the default dormancy days of 1 day' do
       Timecop.freeze(Date.today - 1)
       @task_1.complete
       Timecop.return
