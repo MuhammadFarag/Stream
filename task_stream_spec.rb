@@ -56,7 +56,7 @@ end
 
 describe Stream do
   before(:each) do
-    @task_1 = Task.new('M@y first task')
+    @task_1 = Task.new('My first task')
     @task_2 = Task.new('My second task')
     @stream = Stream.new
     @stream.add(@task_1)
