@@ -4,19 +4,11 @@ require 'timecop'
 
 class DateTime
   def to_date
-    Date.jd(DateTime.now.jd)
-  end
-
-  def same_day_as?(other)
-    Date.jd(jd) == Date.jd(other.jd)
-  end
-
-  def today?
-    same_day_as?(DateTime.now)
+    Date.jd(jd)
   end
 
   def within?(days)
-    (Date.jd(jd) - Date.jd(DateTime.now.jd)).abs < days
+    (to_date - DateTime.now.to_date).abs < days
   end
 end
 
@@ -32,10 +24,6 @@ class Task
 
   def complete?
     !@completion_time.nil?
-  end
-
-  def completed_today?
-    @completion_time.today?
   end
 
   def completed_within?(days)
