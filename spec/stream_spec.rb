@@ -1,16 +1,14 @@
 require 'rspec'
 require 'date'
 require 'timecop'
-require './lib/task.rb'
-require './lib/stream.rb'
 require './lib/task_stream.rb'
 
 
 describe Stream do
   before(:each) do
-    @task_1 = Task.new('My first task')
-    @task_2 = Task.new('My second task')
-    @stream = Stream.new(5, DateTime.now)
+    @task_1 = TaskStream.new_task('My first task')
+    @task_2 = TaskStream.new_task('My second task')
+    @stream = TaskStream.new_stream(5, DateTime.now)
     @stream.add(@task_1)
     @stream.add(@task_2)
   end
