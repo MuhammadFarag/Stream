@@ -3,10 +3,9 @@ require 'date'
 require 'timecop'
 require './lib/task.rb'
 require './lib/stream.rb'
-require './lib/river.rb'
+require './lib/task_stream.rb'
 
-
-describe Stream do
+describe TaskStream do
   before(:each) do
     @task_1 = Task.new('My first task')
     @task_2 = Task.new('My second task')
@@ -15,38 +14,20 @@ describe Stream do
     @stream.add(@task_2)
   end
 
-  after(:each) do
-    Timecop.return
-  end
-
-  context 'Due task' do
-    it 'should be empty if no Tasks were added' do
-      stream = Stream.new
-      expect(stream.due).to eq nil
+  context 'tasks' do
+    it 'should return nothing if the river is empty' do
+      river = TaskStream.new
+      expect(river.tasks).to eq nil
     end
 
-    it 'should get the first entered task FIFO' do
-      expect(@stream.due).to eq @task_1
+    it 'should return due task from one stream' do
+      river = TaskStream.new(@stream)
+      expect(river.tasks).to eq [@task_1]
     end
 
-    it 'should get nothing, if the last completed task was completed within dormancy value' do
-      Timecop.freeze(Date.today - 4)
-      @task_1.complete
-      Timecop.return
-      expect(@stream.due).to eq nil
-    end
-
-    it 'should get new task if the last completed task, was completed before dormancy value' do
-      Timecop.freeze(Date.today - 5)
-      @task_1.complete
-      Timecop.return
-      expect(@stream.due).to eq @task_2
-    end
-
-    it 'should not get tasks for streams that are going to start in the future' do
-      Timecop.freeze(Date.today - 5)
-      expect(@stream.due).to eq nil
-      Timecop.return
+    it 'should return due tasks from all streams' do
+      river = TaskStream.new(@stream, @stream)
+      expect(river.tasks).to eq [@task_1, @task_1]
     end
   end
 end

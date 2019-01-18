@@ -1,4 +1,4 @@
-class River
+class TaskStream
   def initialize(*streams)
     @streams = streams
   end
