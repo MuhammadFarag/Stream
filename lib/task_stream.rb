@@ -1,7 +1,7 @@
 require_relative 'task_stream/stream'
 require_relative 'task_stream/task'
 
-class TaskStream
+module TaskStream
   def initialize(*streams)
     @streams = streams
   end

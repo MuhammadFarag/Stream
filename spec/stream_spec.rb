@@ -4,7 +4,7 @@ require 'timecop'
 require './lib/task_stream.rb'
 
 
-describe Stream do
+describe TaskStream::Stream do
   before(:each) do
     @task_1 = TaskStream.new_task('My first task')
     @task_2 = TaskStream.new_task('My second task')
@@ -19,7 +19,7 @@ describe Stream do
 
   context 'Due task' do
     it 'should be empty if no Tasks were added' do
-      stream = Stream.new
+      stream = TaskStream.new_stream
       expect(stream.due).to eq nil
     end
 

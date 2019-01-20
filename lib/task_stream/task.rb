@@ -10,21 +10,25 @@ class DateTime
   end
 end
 
+module TaskStream
 
-class Task
-  def initialize(description)
-    @description = description
-  end
 
-  def complete
-    @completion_time = DateTime.now
-  end
 
-  def complete?
-    !@completion_time.nil?
-  end
+  class Task
+    def initialize(description)
+      @description = description
+    end
 
-  def completed_within?(days)
-    @completion_time.within?(days)
+    def complete
+      @completion_time = DateTime.now
+    end
+
+    def complete?
+      !@completion_time.nil?
+    end
+
+    def completed_within?(days)
+      @completion_time.within?(days)
+    end
   end
 end
