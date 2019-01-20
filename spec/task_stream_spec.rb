@@ -13,7 +13,7 @@ describe TaskStream do
   end
 
   context 'tasks' do
-    it 'should return nothing if the river is empty' do
+    it 'should return nothing if the task_stream is empty' do
       river = TaskStream.new
       expect(river.tasks).to eq nil
     end
