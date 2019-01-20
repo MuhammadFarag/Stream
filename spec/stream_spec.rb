@@ -6,9 +6,9 @@ require './lib/task_stream.rb'
 
 describe TaskStream::Stream do
   before(:each) do
-    @task_1 = TaskStream.new_task('My first task')
-    @task_2 = TaskStream.new_task('My second task')
-    @stream = TaskStream.new_stream(5, DateTime.now)
+    @task_1 = TaskStream::Task.new('My first task')
+    @task_2 = TaskStream::Task.new('My second task')
+    @stream = TaskStream::Stream.new(5, DateTime.now)
     @stream.add(@task_1)
     @stream.add(@task_2)
   end
@@ -19,7 +19,7 @@ describe TaskStream::Stream do
 
   context 'Due task' do
     it 'should be empty if no Tasks were added' do
-      stream = TaskStream.new_stream
+      stream = TaskStream::Stream.new
       expect(stream.due).to eq nil
     end
 
