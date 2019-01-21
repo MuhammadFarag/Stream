@@ -46,5 +46,12 @@ describe TaskStream::Stream do
       expect(@stream.due).to eq nil
       Timecop.return
     end
+
+    it 'should return due task if initialized with nils' do
+      stream = TaskStream::Stream.new(nil, nil)
+      stream.add(@task_1)
+      expect(stream.due).to eq @task_1
+
+    end
   end
 end
