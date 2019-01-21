@@ -1,17 +1,9 @@
 require 'date'
-
-class DateTime
-  def to_date
-    Date.jd(jd)
-  end
-
-  def within?(days)
-    (to_date - DateTime.now.to_date).abs < days
-  end
-end
-
+require_relative 'refinement'
 module TaskStream
   class Task
+
+    using DateTimeOps
     attr_accessor :description
 
     def initialize(description, completion_time = nil)
