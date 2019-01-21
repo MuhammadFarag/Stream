@@ -1,10 +1,12 @@
-
 module TaskStream
   class Stream
-    def initialize(dormancy_days = 1, start_date = nil)
+    attr_accessor :name
+
+    def initialize(dormancy_days = 1, start_date = nil, name = "") # TODO: Remove the empty default value
       @task_list = []
       @dormancy_days = dormancy_days
       @start_date = start_date
+      @name = name
     end
 
     def add(task)
