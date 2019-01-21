@@ -14,8 +14,9 @@ module TaskStream
   class Task
     attr_accessor :description
 
-    def initialize(description)
+    def initialize(description, completion_time = nil)
       @description = description
+      @completion_time = completion_time
     end
 
     def complete
