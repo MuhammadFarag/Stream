@@ -17,7 +17,7 @@ module TaskStream
       return unless @start_date.nil? || @start_date && @start_date <= Time.now
 
       last_completed_task = @task_list.select(&:complete?).last
-      @task_list.reject(&:complete?).first unless last_completed_task && last_completed_task.completed_within?(@dormancy_days)
+      @task_list.reject(&:complete?).first unless @dormancy_days && last_completed_task && last_completed_task.completed_within?(@dormancy_days)
     end
   end
 end
