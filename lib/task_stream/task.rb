@@ -1,15 +1,5 @@
 require 'date'
 
-class DateTime
-  def to_date
-    Date.jd(jd)
-  end
-
-  def within?(days)
-    (to_date - DateTime.now.to_date).abs < days
-  end
-end
-
 module TaskStream
   class Task
     attr_accessor :description
@@ -28,7 +18,7 @@ module TaskStream
     end
 
     def completed_within?(days)
-      @completion_time.within?(days)
+      (Date.jd(@completion_time.jd) - DateTime.now.to_date).abs < days
     end
   end
 end
