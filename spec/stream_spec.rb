@@ -8,7 +8,7 @@ describe TaskStream::Stream do
   before(:each) do
     @task_1 = TaskStream::Task.new('My first task')
     @task_2 = TaskStream::Task.new('My second task')
-    @stream = TaskStream::Stream.new(5, DateTime.now)
+    @stream = TaskStream::Stream.new(5, Time.now)
     @stream.add(@task_1)
     @stream.add(@task_2)
   end

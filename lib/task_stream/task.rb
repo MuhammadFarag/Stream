@@ -10,7 +10,7 @@ module TaskStream
     end
 
     def complete
-      @completion_time = DateTime.now
+      @completion_time = Time.now
     end
 
     def complete?
@@ -18,7 +18,7 @@ module TaskStream
     end
 
     def completed_within?(days)
-      (Date.jd(@completion_time.jd) - DateTime.now.to_date).abs < days
+      (Time.now - @completion_time ) < (days * 24 * 3600)
     end
   end
 end
