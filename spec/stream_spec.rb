@@ -76,5 +76,15 @@ describe TaskStream::Stream do
       expect(@stream.due.overdue).to  eq 1
     end
 
+    it 'Should one day less than time since last task was completed if dormancy days is nil' do
+      stream = TaskStream::Stream.new(nil, Time.now, "Stream name")
+      stream.add(@task_1)
+      stream.add(@task_2)
+      Timecop.freeze(Date.today + 1 )
+      @task_1.complete
+      Timecop.freeze(Date.today + 3 )
+      expect(stream.due.overdue).to  eq 2
+    end
+
   end
 end
