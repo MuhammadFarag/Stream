@@ -22,7 +22,7 @@ module TaskStream
       unless due_task.nil?
         due_task.extend TaskStream::DueTask
         unless last_completed_task.nil?
-          due_task.overdue = time_sub(Time.now, last_completed_task.completion_time) - 1
+          due_task.overdue = time_sub(Time.now, last_completed_task.completion_time) - 1 - (@dormancy_days.nil? ? 0 : @dormancy_days)
         else
           due_task.overdue = @start_date.nil? ? 0 : time_sub(Time.now, @start_date) - 1
         end
