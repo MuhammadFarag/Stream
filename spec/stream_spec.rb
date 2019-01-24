@@ -62,4 +62,19 @@ describe TaskStream::Stream do
       expect(stream.due).to eq @task_2
     end
   end
+
+  context 'number of overdue days' do
+
+    it 'Should be zero for the first task if the stream has no start date' do
+      stream = TaskStream::Stream.new(nil, nil, "Stream name")
+      stream.add(@task_1)
+      expect(stream.due.overdue).to  eq 0
+    end
+
+    it 'Should one day less than time since the start of the stream for the first task' do
+      Timecop.freeze(Date.today + 2 )
+      expect(@stream.due.overdue).to  eq 1
+    end
+
+  end
 end

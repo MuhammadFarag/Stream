@@ -2,7 +2,7 @@ require 'date'
 
 module TaskStream
   class Task
-    attr_accessor :description
+    attr_accessor :description, :completion_time
 
     def initialize(description, completion_time = nil)
       @description = description
